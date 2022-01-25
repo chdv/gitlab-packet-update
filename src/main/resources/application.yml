@@ -1,0 +1,20 @@
+
+packet-update:
+
+  gitlab:
+    address: "http://gitlab.com/api/v4/groups/some%2Fprojects"
+    token: "35VjHBSw7zUDBQkzUNSY"
+
+  output-dir: "C:\\Workspace\\processes"
+
+  ticket-id: "GIT-123"
+
+  work-message: "update aggregator pom.xml version"
+
+  branch-name: "feature/${packet-update.ticket-id}"
+
+  commit-message: "[${packet-update.ticket-id}] ${packet-update.work-message}"
+
+  version-old: "0.0.0"
+
+  version-new: "2.1.0"
