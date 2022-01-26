@@ -18,3 +18,5 @@ packet-update:
   version-old: "0.0.0"
 
   version-new: "2.1.0"
+
+  clone-command: "git clone --recurse-submodules"

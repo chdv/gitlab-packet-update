@@ -22,8 +22,7 @@ public class GitlabCloner implements Function<String, Path> {
     public Path apply(String gitlabUrl) {
         String name = gitlabUrl.substring(gitlabUrl.lastIndexOf('/') + 1, gitlabUrl.lastIndexOf('.'));
         String resultDir = gitlabInfo.getOutputDir() + File.separator + name;
-        processExecutor.apply("git clone " + gitlabUrl + " " + resultDir, null);
-        // git clone --recurse-submodules
+        processExecutor.apply(gitlabInfo.getCloneCommand() + " " + gitlabUrl + " " + resultDir, null);
         return Path.of(resultDir);
     }
 }

@@ -23,4 +23,6 @@ public class GitlabPacketUpdateInfo {
 
     private final String versionNew;
 
+    private final String cloneCommand;
+
 }
