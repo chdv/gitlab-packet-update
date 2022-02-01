@@ -28,48 +28,28 @@ import java.util.stream.Stream;
 @Slf4j
 class GitlabPacketUpdateAppTests {
 
-    @Autowired
-    private GitlabJsonParser parser;
-
-    @Value("classpath:input/gitlab-processes.json")
-    private Resource inputJson;
-
-    @Autowired
-    private GitlabDirList gitlabDirList;
-
-    @Autowired
-    private GitlabPacketUpdateInfo gitlabInfo;
-
-    @Autowired
-    private GitlabPomUpdater gitlabPomUpdater;
-
-    @Autowired
-    private GitlabDownloader gitlabDownloader;
-
-    @Autowired
-    private GitlabCommiter gitlabCommiter;
-
-    @Autowired
-    private GitlabPusher gitlabPusher;
-
     @MockBean
     private GitlabAppRunner gitlabAppRunner;
 
     @Test
-    public void testProcessesJsonParse() throws IOException {
+    public void testProcessesJsonParse(@Autowired GitlabJsonParser parser,
+                                       @Value("classpath:input/gitlab-processes.json") Resource inputJson) throws IOException {
         var res = parser.apply(inputJson.getInputStream());
         MatcherAssert.assertThat(res, Matchers.hasSize(1));
     }
 
     @Test
     @Disabled
-    public void testGitlabDownloader() {
+    public void testGitlabDownloader(@Autowired GitlabPacketUpdateInfo gitlabInfo,
+                                     @Autowired GitlabDownloader gitlabDownloader) {
         Optional.of(gitlabInfo.getGitlab()).map(gitlabDownloader);
     }
 
     @Test
     @Disabled
-    public void testPomUpdater() {
+    public void testPomUpdater(@Autowired GitlabPacketUpdateInfo gitlabInfo,
+                               @Autowired GitlabPomUpdater gitlabPomUpdater,
+                               @Autowired GitlabDirList gitlabDirList) {
         log.info("count " +
                 Stream.of(gitlabInfo.getOutputDir())
                         .map(gitlabDirList)
@@ -81,7 +61,9 @@ class GitlabPacketUpdateAppTests {
 
     @Test
     @Disabled
-    public void testCommit() {
+    public void testCommit(@Autowired GitlabPacketUpdateInfo gitlabInfo,
+                           @Autowired GitlabCommiter gitlabCommiter,
+                           @Autowired GitlabDirList gitlabDirList) {
         log.info("count " +
                 Stream.of(gitlabInfo.getOutputDir())
                         .map(gitlabDirList)
@@ -92,7 +74,7 @@ class GitlabPacketUpdateAppTests {
 
     @Test
     @Disabled
-    public void testSmallPush() {
+    public void testSmallPush(@Autowired GitlabPusher gitlabPusher) {
         log.info("list " +
                 Stream.of(Path.of("C:\\Workspace\\processes\\bp-access-limitation-fu-tm"))
                         .map(gitlabPusher)
@@ -101,7 +83,9 @@ class GitlabPacketUpdateAppTests {
 
     @Test
     @Disabled
-    public void testPush() {
+    public void testPush(@Autowired GitlabPacketUpdateInfo gitlabInfo,
+                         @Autowired GitlabPusher gitlabPusher,
+                         @Autowired GitlabDirList gitlabDirList) {
         log.info("count " +
                 Stream.of(gitlabInfo.getOutputDir())
                         .map(gitlabDirList)
@@ -109,6 +93,5 @@ class GitlabPacketUpdateAppTests {
                         .map(gitlabPusher)
                         .count());
     }
-
 
 }
